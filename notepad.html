@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elite Nurse Pro | Premium Uniform Shop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --dark-bg: #0f172a;
+            --shopee-orange: #ee4d2d;
+            --glass-white: rgba(255, 255, 255, 0.05);
+            --text-light: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--dark-bg); color: var(--text-light); }
+
+        nav { 
+            padding: 20px 8%; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        .logo { font-family: 'Playfair Display', serif; color: var(--gold); font-size: 1.8rem; letter-spacing: 2px; }
+        .shopee-nav-btn { background: var(--shopee-orange); color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 0.8rem; transition: 0.3s; }
+        .shopee-nav-btn:hover { background: #ff5722; box-shadow: 0 0 15px rgba(238, 77, 45, 0.4); }
+
+        header {
+            height: 75vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.6), rgba(15, 23, 42, 0.6)), 
+                        url('https://images.unsplash.com/photo-1599493356626-9fdbdcbe9381?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; border-bottom: 5px solid var(--gold);
+        }
+        header h1 { font-family: 'Playfair Display', serif; font-size: 4rem; color: var(--gold); margin-bottom: 10px; }
+        header p { font-size: 1.1rem; letter-spacing: 2px; font-weight: 300; margin-bottom: 30px; text-transform: uppercase; }
+
+        .container { padding: 80px 8%; }
+        .section-title { text-align: center; margin-bottom: 60px; font-family: 'Playfair Display', serif; font-size: 2.5rem; color: var(--gold); }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        .p-card {
+            background: var(--glass-white); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 25px;
+            padding: 20px; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .p-card:hover { transform: translateY(-15px); border-color: var(--gold); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+
+        .img-wrapper { position: relative; overflow: hidden; border-radius: 15px; margin-bottom: 15px; cursor: zoom-in; }
+        .p-card img { width: 100%; height: 320px; object-fit: cover; transition: transform 0.3s ease; }
+        .p-card:hover .img-wrapper img { transform: scale(1.05); }
+
+        .p-card h3 { font-size: 1.2rem; margin-bottom: 5px; color: var(--gold); }
+        .p-desc { font-size: 0.8rem; color: #94a3b8; margin-bottom: 15px; line-height: 1.4; min-height: 40px; }
+
+        .price-list { background: rgba(0,0,0,0.4); border-radius: 12px; padding: 12px; margin-bottom: 15px; border-left: 3px solid var(--gold); text-align: left; }
+        .price-item { display: flex; justify-content: space-between; margin: 4px 0; font-size: 0.85rem; }
+        .price-value { font-weight: 700; color: #4ade80; }
+
+        .btn-group { display: flex; flex-direction: column; gap: 8px; }
+        .fb-order-btn, .shopee-order-btn { display: block; color: white; text-decoration: none; padding: 12px; border-radius: 12px; font-weight: 700; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; text-align: center; }
+        .fb-order-btn { background: #1877f2; }
+        .shopee-order-btn { background: var(--shopee-orange); }
+        .fb-order-btn:hover, .shopee-order-btn:hover { opacity: 0.9; letter-spacing: 0.5px; }
+
+        .zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 3000; justify-content: center; align-items: center; cursor: zoom-out; }
+        .zoom-overlay img { max-width: 90%; max-height: 90%; border: 2px solid var(--gold); border-radius: 10px; }
+        .close-zoom { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="zoom-overlay" id="zoomOverlay" onclick="closeImage()">
+    <span class="close-zoom">&times;</span>
+    <img id="zoomedImg" src="" alt="Zoomed View">
+</div>
+
+<nav>
+    <div class="logo">J & A Uniform</div>
+    <a href="https://shopee.ph/YOUR_SHOP" target="_blank" class="shopee-nav-btn">VISIT OUR SHOPEE</a>
+</nav>
+
+<header>
+    <h1>J & A Uniform</h1>
+    <p>Premium Quality Scrubs for Everyday Excellence</p>
+    <a href="#shop" style="border: 2px solid var(--gold); color: var(--gold); padding: 10px 30px; text-decoration: none; font-weight: 700; border-radius: 50px; margin-top: 20px;">BROWSE UNIFORMS</a>
+</header>
+
+<div class="container" id="shop">
+    <h2 class="section-title">Our Products</h2>
+    <div class="product-grid">
+        
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="2.JPG" alt="3 Pleats Uniform"></div>
+            <div><h3>3 Pleats Uniform</h3><p class="p-desc">Elegant pleated style for a professional medical silhouette.</p>
+                <div class="price-list"><div class="price-item"><span>S to M:</span><span class="price-value">₱800.00</span></div><div class="price-item"><span>L to XL:</span><span class="price-value">₱900.00</span></div></div>
+            </div>
+            <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Signature Lab Coat"></div>
+            <div><h3>Signature Lab Coat</h3><p class="p-desc">Heavy-duty fabric with a clean, classic professional finish.</p>
+                <div class="price-list"><div class="price-item"><span>S to M:</span><span class="price-value">₱800.00</span></div><div class="price-item"><span>L to XL:</span><span class="price-value">₱900.00</span></div></div>
+            </div>
+             <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Cargo Jogger Scrubs"></div>
+            <div><h3>Cargo Jogger Scrubs</h3><p class="p-desc">Dynamic fit with deep cargo pockets for your medical tools.</p>
+                <div class="price-list"><div class="price-item"><span>S to M:</span><span class="price-value">₱800.00</span></div><div class="price-item"><span>L to XL:</span><span class="price-value">₱900.00</span></div></div>
+            </div>
+             <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Mandarin Collar Top"></div>
+            <div><h3>Mandarin Collar Top</h3><p class="p-desc">Sophisticated Asian-inspired collar for a modern medical look.</p>
+                <div class="price-list"><div class="price-item"><span>S to M:</span><span class="price-value">₱800.00</span></div><div class="price-item"><span>L to XL:</span><span class="price-value">₱900.00</span></div></div>
+            </div>
+            <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Classic White Lab Gown"></div>
+            <div><h3>Classic White Lab Gown</h3><p class="p-desc">Breathable, high-quality white gown for clinic or lab use.</p>
+                <div class="price-list"><div class="price-item"><span>S to M:</span><span class="price-value">₱800.00</span></div><div class="price-item"><span>L to XL:</span><span class="price-value">₱900.00</span></div></div>
+            </div>
+             <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Compression Socks"></div>
+            <div><h3>Compression Socks</h3><p class="p-desc">Reduces fatigue during long 12-hour hospital shifts.</p>
+                <div class="price-list"><div class="price-item"><span>One Size:</span><span class="price-value">₱350.00</span></div><div class="price-item"><span>Premium:</span><span class="price-value">₱450.00</span></div></div>
+            </div>
+             <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Doctor's Scrub Suit"></div>
+            <div><h3>Doctor's Scrub Suit</h3><p class="p-desc">V-neck traditional cut with double-stitched durability.</p>
+                <div class="price-list"><div class="price-item"><span>S to M:</span><span class="price-value">₱800.00</span></div><div class="price-item"><span>L to XL:</span><span class="price-value">₱900.00</span></div></div>
+            </div>
+             <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Premium Stethoscope Case"></div>
+            <div><h3>Premium Stethoscope Case</h3><p class="p-desc">Hard-shell protection to keep your stethoscope safe and clean.</p>
+                <div class="price-list"><div class="price-item"><span>Standard:</span><span class="price-value">₱500.00</span></div><div class="price-item"><span>Leather:</span><span class="price-value">₱750.00</span></div></div>
+            </div>
+             <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Unisex Active Scrubs"></div>
+            <div><h3>Unisex Active Scrubs</h3><p class="p-desc">Stretchable fabric designed for maximum range of motion.</p>
+                <div class="price-list"><div class="price-item"><span>S to M:</span><span class="price-value">₱800.00</span></div><div class="price-item"><span>L to XL:</span><span class="price-value">₱900.00</span></div></div>
+            </div>
+             <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+
+        </div>
+
+        <div class="p-card">
+            <div class="img-wrapper" onclick="zoomImage(this)"><img src="1.png" alt="Nurse Undershirt"></div>
+            <div><h3>Nurse Undershirt</h3><p class="p-desc">Soft cotton inner wear for extra comfort under your scrubs.</p>
+                <div class="price-list"><div class="price-item"><span>S to M:</span><span class="price-value">₱400.00</span></div><div class="price-item"><span>L to XL:</span><span class="price-value">₱500.00</span></div></div>
+            </div>
+             <div class="btn-group"><a href="https://www.facebook.com/jegerloor" class="fb-order-btn">Messsage us on Facebook</a><a href="#" class="shopee-order-btn">Shopee Shop</a></div>
+
+        </div>
+
+    </div>
+</div>
+
+<footer style="text-align: center; padding: 40px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.7rem; opacity: 0.5;">
+    &copy; 2026 NURSE ELITE PRO | QUALITY UNIFORMS PHILIPPINES
+</footer>
+
+<script>
+    function zoomImage(element) {
+        const overlay = document.getElementById('zoomOverlay');
+        const zoomedImg = document.getElementById('zoomedImg');
+        const clickedImgSrc = element.querySelector('img').src;
+        zoomedImg.src = clickedImgSrc;
+        overlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+    function closeImage() {
+        const overlay = document.getElementById('zoomOverlay');
+        overlay.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+</script>
+
+</body>
+</html>
